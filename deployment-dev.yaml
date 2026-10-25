@@ -1,36 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-deployment
+  name: minterjt-lab39-flask
   labels:
-    app: flask
+    app: minterjt-lab39-flask
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flask
+      app: minterjt-lab39-flask
   template:
     metadata:
       labels:
-        app: flask
+        app: minterjt-lab39-flask
     spec:
       containers:
         - name: flask
-          image: cithit/roseaw:latest   #<-----change this!!!!
+          image: cithit/minterjt:latest
           ports:
             - containerPort: 5000
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service
+  name: minterjt-lab39-flask-service
+  annotations:
+    metallb.universe.tf/address-pool: minterjt-production
+    metallb.universe.tf/allow-shared-ip: minterjt-production
 spec:
-  type: LoadBalancer 
-  loadBalancerIP: 10.48.229.45     #<-----change this!!!!                             
+  type: LoadBalancer
+  loadBalancerIP: 10.48.229.34
   ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
   selector:
-    app: flask 
+    app: minterjt-lab39-flask
